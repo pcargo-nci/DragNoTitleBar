@@ -8,16 +8,35 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
     mc:Ignorable="d"
     >
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid>
-        <materialDesign:ColorZone
-            Margin="16"
-            Padding="16"
-            materialDesign:ElevationAssist.Elevation="Dp1"
-            Mode="Light"
-            >
-            <TextBlock Text="Hello" />
-        </materialDesign:ColorZone>
+        <StackPanel>
+            
+            <materialDesign:ColorZone
+                Height="8"
+                Mode="SecondaryLight"
+                >
+                <materialDesign:ColorZone.Visibility>
+                    <Binding
+                        Converter="{StaticResource InverseBooleanToVisibilityConverter}"
+                        Mode="OneWay"
+                        Path="Highlight"
+                        />
+                </materialDesign:ColorZone.Visibility>
+            </materialDesign:ColorZone>
+            
+            <materialDesign:ColorZone
+                Padding="16"
+                Mode="Light"
+                >
+                <TextBlock Text="Hello" />
+            </materialDesign:ColorZone>
+        </StackPanel>
     </Grid>
 </UserControl>

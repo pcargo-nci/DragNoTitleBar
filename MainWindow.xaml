@@ -9,8 +9,9 @@
     Title="MainWindow"
     Width="332"
     Height="450"
-    MinWidth="332"
     MinHeight="450"
+    MaxWidth="332"
+    MinWidth="332"
     AllowsTransparency="True"
     Closing="Window_Closing"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -45,7 +46,6 @@
                 </Grid.RowDefinitions>
 
                 <materialDesign:ColorZone
-                    materialDesign:ElevationAssist.Elevation="Dp5"
                     Mode="PrimaryDark"
                     MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
                     >

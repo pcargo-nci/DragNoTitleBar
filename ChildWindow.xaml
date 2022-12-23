@@ -7,10 +7,8 @@
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="ChildWindow"
-    Width="332"
-    Height="450"
-    MinWidth="332"
-    MinHeight="450"
+    Width="316"
+    Height="108"
     AllowsTransparency="True"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     ResizeMode="CanResizeWithGrip"
@@ -43,8 +41,7 @@
                 </Grid.RowDefinitions>
 
                 <materialDesign:ColorZone
-                    materialDesign:ElevationAssist.Elevation="Dp5"
-                    Mode="PrimaryDark"
+                    Mode="SecondaryLight"
                     MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
                     >
                     <DockPanel>
@@ -52,7 +49,7 @@
                         <Button
                             Click="Button_Click"
                             DockPanel.Dock="Right"
-                            Foreground="White"
+                            Foreground="Black"
                             Style="{StaticResource MaterialDesignIconButton}"
                             ToolTip="Close"
                             >

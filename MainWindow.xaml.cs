@@ -41,7 +41,10 @@ public partial class MainWindow : Window
     /// </summary>
     private Card CardCreate()
     {
-        Card newCard = new();
+        Card newCard = new()
+        {
+            Highlight = false
+        };
         newCard.MouseLeftButtonDown += Card_MouseLeftButtonDown;
         return newCard;
     }
