@@ -1,20 +1,18 @@
 ﻿<Window
-    x:Class="DragNoTitleBar.MainWindow"
+    x:Class="DragNoTitleBar.ChildWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DragNoTitleBar"
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
+    Title="ChildWindow"
     Width="332"
     Height="450"
     MinWidth="332"
     MinHeight="450"
     AllowsTransparency="True"
-    Closing="Window_Closing"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
-    FontFamily="{DynamicResource MaterialDesignFont}"
     ResizeMode="CanResizeWithGrip"
     WindowState="Normal"
     WindowStyle="None"
@@ -85,20 +83,6 @@
 
     </Window.Template>
 
-    <!--  main content  -->
-    <ScrollViewer>
-
-        <ItemsControl ItemsSource="{Binding Path=Cards}">
-
-            <!--  wrapper for the card  -->
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-        </ItemsControl>
-
-    </ScrollViewer>
+    <local:Card />
 
 </Window>
