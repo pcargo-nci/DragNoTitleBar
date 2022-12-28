@@ -43,6 +43,7 @@
                 <materialDesign:ColorZone
                     Mode="SecondaryLight"
                     MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
+                    MouseUp="ColorZone_MouseUp"
                     >
                     <DockPanel>
 

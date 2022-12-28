@@ -73,11 +73,42 @@ public partial class MainWindow : Window
         card.MouseLeftButtonDown -= Card_MouseLeftButtonDown;
         Cards.Remove(card);
 
+        // listen for window drop
+        childWindow.WindowDropped += ChildWindow_WindowDropped;
+
         // show window
         childWindow.Show();
 
         // start dragging
-        childWindow.DragMove();
+        childWindow.StartDraging();
+    }
+
+    private void ChildWindow_WindowDropped(object sender, RoutedEventArgs e)
+    {
+        var args = (WindowDropEventArgs)e;
+        var dropPoint = args.EventArgs;
+
+        // check to see if drop was within the bounds of the window
+        if (
+            dropPoint.X > Left
+            && dropPoint.X < Left + ActualWidth
+            && dropPoint.Y > Top
+            && dropPoint.Y < Top + ActualHeight
+        )
+        {
+            var childWindow = (ChildWindow)sender;
+            ChildWindowDrop(childWindow);
+        }
+    }
+
+    private void ChildWindowDrop(ChildWindow childWindow)
+    {
+        // close down the Child Window
+        childWindow.WindowDropped -= ChildWindow_WindowDropped;
+        childWindow.Close();
+
+        // place card into Main Window
+        Cards.Add(CardCreate());
     }
 
     /// <summary>
@@ -88,6 +119,7 @@ public partial class MainWindow : Window
         // close the ChildWindows
         foreach (ChildWindow childWindow in ChildWindows)
         {
+            childWindow.WindowDropped -= ChildWindow_WindowDropped;
             childWindow.Close();
         }
     }
