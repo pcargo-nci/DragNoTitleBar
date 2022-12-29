@@ -9,10 +9,10 @@
     Title="MainWindow"
     Width="332"
     Height="450"
-    MinHeight="450"
-    MaxWidth="332"
     MinWidth="332"
+    MinHeight="450"
     AllowsTransparency="True"
+    Background="Transparent"
     Closing="Window_Closing"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     FontFamily="{DynamicResource MaterialDesignFont}"
@@ -27,78 +27,81 @@
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
 
-    <Window.Template>
+    <Grid
+        Margin="1"
+        Background="Transparent"
+        >
 
-        <ControlTemplate TargetType="Window">
+        <Grid Background="White">
 
-            <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <Grid.Background>
-                    <SolidColorBrush
-                        Opacity="0.94"
-                        Color="White"
-                        />
-                </Grid.Background>
+            <!--  creates a thin border around the window  -->
+            <Grid.Effect>
+                <DropShadowEffect
+                    BlurRadius="2"
+                    Direction="-90"
+                    RenderingBias="Quality"
+                    ShadowDepth=".1"
+                    />
+            </Grid.Effect>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <materialDesign:ColorZone
+                Grid.Row="0"
+                Mode="PrimaryDark"
+                MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
+                >
+                <DockPanel>
 
-                <materialDesign:ColorZone
-                    Mode="PrimaryDark"
-                    MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
-                    >
-                    <DockPanel>
-
-                        <Button
-                            Click="Button_Click"
-                            DockPanel.Dock="Right"
-                            Foreground="White"
-                            Style="{StaticResource MaterialDesignIconButton}"
-                            ToolTip="Close"
-                            >
-                            <materialDesign:PackIcon
-                                Width="16"
-                                Height="16"
-                                Kind="Close"
-                                />
-                        </Button>
-
-                        <TextBlock
-                            Margin="16,0,0,0"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource MaterialDesignButtonTextBlock}"
-                            Text="{Binding Title}"
+                    <Button
+                        Click="Button_Click"
+                        DockPanel.Dock="Right"
+                        Foreground="White"
+                        Style="{StaticResource MaterialDesignIconButton}"
+                        ToolTip="Close"
+                        >
+                        <materialDesign:PackIcon
+                            Width="16"
+                            Height="16"
+                            Kind="Close"
                             />
+                    </Button>
 
-                    </DockPanel>
-                </materialDesign:ColorZone>
+                    <TextBlock
+                        Margin="16,0,0,0"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource MaterialDesignButtonTextBlock}"
+                        Text="{Binding Title}"
+                        />
 
-                <Grid Grid.Row="1">
-                    <ContentPresenter />
-                </Grid>
+                </DockPanel>
+            </materialDesign:ColorZone>
+
+            <Grid Grid.Row="1">
+
+                <!--  main content  -->
+                <ScrollViewer>
+
+                    <ItemsControl ItemsSource="{Binding Path=Cards}">
+
+                        <!--  wrapper for the card  -->
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                    </ItemsControl>
+
+                </ScrollViewer>
 
             </Grid>
 
-        </ControlTemplate>
+        </Grid>
 
-    </Window.Template>
-
-    <!--  main content  -->
-    <ScrollViewer>
-
-        <ItemsControl ItemsSource="{Binding Path=Cards}">
-
-            <!--  wrapper for the card  -->
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-        </ItemsControl>
-
-    </ScrollViewer>
+    </Grid>
 
 </Window>

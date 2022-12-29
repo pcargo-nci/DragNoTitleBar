@@ -9,8 +9,12 @@
     Title="ChildWindow"
     Width="316"
     Height="108"
+    MinWidth="316"
+    MinHeight="108"
     AllowsTransparency="True"
+    Background="Transparent"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
     ResizeMode="CanResizeWithGrip"
     WindowState="Normal"
     WindowStyle="None"
@@ -22,65 +26,69 @@
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
 
-    <Window.Template>
+    <Grid
+        Background="Transparent"
+        MouseUp="ColorZone_MouseUp"
+        >
 
-        <ControlTemplate TargetType="Window">
+        <Grid Margin="1">
 
-            <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <Grid.Background>
-                    <SolidColorBrush
-                        Opacity="0.94"
-                        Color="White"
-                        />
-                </Grid.Background>
+            <Grid.Background>
+                <SolidColorBrush Color="White" />
+            </Grid.Background>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <!--  creates a thin border around the window  -->
+            <Grid.Effect>
+                <DropShadowEffect
+                    BlurRadius="2"
+                    Direction="-90"
+                    RenderingBias="Quality"
+                    ShadowDepth=".1"
+                    />
+            </Grid.Effect>
 
-                <materialDesign:ColorZone
-                    Mode="SecondaryLight"
-                    MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
-                    MouseUp="ColorZone_MouseUp"
-                    >
-                    <DockPanel>
+            <materialDesign:ColorZone
+                Grid.Row="0"
+                Mode="SecondaryLight"
+                MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
+                >
+                <DockPanel>
 
-                        <Button
-                            Click="Button_Click"
-                            DockPanel.Dock="Right"
-                            Foreground="Black"
-                            Style="{StaticResource MaterialDesignIconButton}"
-                            ToolTip="Close"
-                            >
-                            <materialDesign:PackIcon
-                                Width="16"
-                                Height="16"
-                                Kind="Close"
-                                />
-                        </Button>
-
-                        <TextBlock
-                            Margin="16,0,0,0"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource MaterialDesignButtonTextBlock}"
-                            Text="{Binding Title}"
+                    <Button
+                        Click="Button_Click"
+                        DockPanel.Dock="Right"
+                        Foreground="Black"
+                        Style="{StaticResource MaterialDesignIconButton}"
+                        ToolTip="Close"
+                        >
+                        <materialDesign:PackIcon
+                            Width="16"
+                            Height="16"
+                            Kind="Close"
                             />
+                    </Button>
 
-                    </DockPanel>
-                </materialDesign:ColorZone>
+                    <TextBlock
+                        Margin="16,0,0,0"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource MaterialDesignButtonTextBlock}"
+                        Text="{Binding Title}"
+                        />
 
-                <Grid Grid.Row="1">
-                    <ContentPresenter />
-                </Grid>
+                </DockPanel>
+            </materialDesign:ColorZone>
 
+            <Grid Grid.Row="1">
+                <local:Card />
             </Grid>
 
-        </ControlTemplate>
+        </Grid>
 
-    </Window.Template>
-
-    <local:Card />
+    </Grid>
 
 </Window>
