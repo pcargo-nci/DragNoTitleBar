@@ -44,11 +44,13 @@ public partial class ChildWindow : Window
         remove { RemoveHandler(WindowDroppedEvent, value); }
     }
 
-    public bool dragging;
+    public bool Dragging;
+    
+    public Point DraggingPoint = new(0,0);
 
     public void StartDraging()
     {
-        dragging = true;
+        Dragging = true;
         DragMove();
     }
 
@@ -59,19 +61,23 @@ public partial class ChildWindow : Window
 
     private void ColorZone_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
+        DraggingPoint = e.GetPosition(this);
         StartDraging();
     }
 
     private void ColorZone_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        if (dragging)
+        if (Dragging)
         {
+            var mainWindowPosition = e.GetPosition(Application.Current.MainWindow);
+            var relativePosition = new Point(mainWindowPosition.X + DraggingPoint.X, mainWindowPosition.Y + DraggingPoint.Y);
+
             // create event args
-            WindowDropEventArgs routedEventArgs = new(WindowDroppedEvent, new Point(Left, Top));
+            WindowDropEventArgs routedEventArgs = new(WindowDroppedEvent, relativePosition);
 
             // raise the event
             RaiseEvent(routedEventArgs);
         }
-        dragging = false;
+        Dragging = false;
     }
 }

@@ -68,6 +68,9 @@ public partial class MainWindow : Window
             Left = anchor.X
         };
 
+        // set the DraggingPoint based on where on the card the mouse is positioned
+        childWindow.DraggingPoint = e.GetPosition(card);
+
         ChildWindows.Add(childWindow);
 
         card.MouseLeftButtonDown -= Card_MouseLeftButtonDown;
@@ -90,10 +93,10 @@ public partial class MainWindow : Window
 
         // check to see if drop was within the bounds of the window
         if (
-            dropPoint.X > Left
-            && dropPoint.X < Left + ActualWidth
-            && dropPoint.Y > Top
-            && dropPoint.Y < Top + ActualHeight
+            dropPoint.X > 0
+            && dropPoint.X < ActualWidth
+            && dropPoint.Y > 0
+            && dropPoint.Y < ActualHeight
         )
         {
             var childWindow = (ChildWindow)sender;

@@ -53,6 +53,7 @@
             </Grid.Effect>
 
             <materialDesign:ColorZone
+                x:Name="TitleBar"
                 Grid.Row="0"
                 Mode="SecondaryLight"
                 MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
