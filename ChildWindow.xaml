@@ -26,12 +26,20 @@
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
 
-    <Grid
+    <Border
         Background="Transparent"
+        BorderThickness="1"
         MouseUp="ColorZone_MouseUp"
         >
 
-        <Grid Margin="1">
+        <Border.BorderBrush>
+            <SolidColorBrush
+                Opacity=".2"
+                Color="Black"
+                />
+        </Border.BorderBrush>
+
+        <Grid>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -41,16 +49,6 @@
             <Grid.Background>
                 <SolidColorBrush Color="White" />
             </Grid.Background>
-
-            <!--  creates a thin border around the window  -->
-            <Grid.Effect>
-                <DropShadowEffect
-                    BlurRadius="2"
-                    Direction="-90"
-                    RenderingBias="Quality"
-                    ShadowDepth=".1"
-                    />
-            </Grid.Effect>
 
             <materialDesign:ColorZone
                 x:Name="TitleBar"
@@ -90,6 +88,6 @@
 
         </Grid>
 
-    </Grid>
+    </Border>
 
 </Window>
