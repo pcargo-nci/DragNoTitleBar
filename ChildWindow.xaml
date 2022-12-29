@@ -23,7 +23,11 @@
 
     <WindowChrome.WindowChrome>
         <!--  remove the chrome at the top of window  -->
-        <WindowChrome CaptionHeight="0" />
+        <!--  make it easier to grab the  edges  -->
+        <WindowChrome
+            CaptionHeight="0"
+            ResizeBorderThickness="8"
+            />
     </WindowChrome.WindowChrome>
 
     <Border MouseUp="ColorZone_MouseUp">
