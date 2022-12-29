@@ -28,16 +28,8 @@
 
     <Border
         Background="Transparent"
-        BorderThickness="1"
         MouseUp="ColorZone_MouseUp"
         >
-
-        <Border.BorderBrush>
-            <SolidColorBrush
-                Opacity=".2"
-                Color="Black"
-                />
-        </Border.BorderBrush>
 
         <Grid>
 
@@ -47,44 +39,76 @@
             </Grid.RowDefinitions>
 
             <Grid.Background>
-                <SolidColorBrush Color="White" />
+                <SolidColorBrush Color="Transparent" />
             </Grid.Background>
 
-            <materialDesign:ColorZone
-                x:Name="TitleBar"
+            <!--  title bar  -->
+            <Border
                 Grid.Row="0"
-                Mode="SecondaryLight"
-                MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
+                BorderThickness="1,1,1,0"
+                CornerRadius="8,8,0,0"
                 >
-                <DockPanel>
 
-                    <Button
-                        Click="Button_Click"
-                        DockPanel.Dock="Right"
-                        Foreground="Black"
-                        Style="{StaticResource MaterialDesignIconButton}"
-                        ToolTip="Close"
-                        >
-                        <materialDesign:PackIcon
-                            Width="16"
-                            Height="16"
-                            Kind="Close"
-                            />
-                    </Button>
-
-                    <TextBlock
-                        Margin="16,0,0,0"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource MaterialDesignButtonTextBlock}"
-                        Text="{Binding Title}"
+                <Border.BorderBrush>
+                    <SolidColorBrush
+                        Opacity=".2"
+                        Color="Black"
                         />
+                </Border.BorderBrush>
 
-                </DockPanel>
-            </materialDesign:ColorZone>
+                <materialDesign:ColorZone
+                    x:Name="TitleBar"
+                    Grid.Row="0"
+                    materialDesign:CornerRadius="8,8,0,0"
+                    Mode="SecondaryLight"
+                    MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
+                    >
+                    <DockPanel>
 
-            <Grid Grid.Row="1">
+                        <Button
+                            Click="Button_Click"
+                            DockPanel.Dock="Right"
+                            Foreground="Black"
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            ToolTip="Close"
+                            >
+                            <materialDesign:PackIcon
+                                Width="16"
+                                Height="16"
+                                Kind="Close"
+                                />
+                        </Button>
+
+                        <TextBlock
+                            Margin="16,0,0,0"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource MaterialDesignButtonTextBlock}"
+                            Text="{Binding Title}"
+                            />
+
+                    </DockPanel>
+                </materialDesign:ColorZone>
+            </Border>
+
+            <!--  content  -->
+            <Border
+                Grid.Row="1"
+                Padding="0,0,0,8"
+                Background="White"
+                BorderThickness="1,0,1,1"
+                CornerRadius="0,0,8,8"
+                >
+
+                <Border.BorderBrush>
+                    <SolidColorBrush
+                        Opacity=".1"
+                        Color="Black"
+                        />
+                </Border.BorderBrush>
+
                 <local:Card />
-            </Grid>
+
+            </Border>
 
         </Grid>
 
