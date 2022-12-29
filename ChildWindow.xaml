@@ -26,10 +26,14 @@
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
 
-    <Border
-        Background="Transparent"
-        MouseUp="ColorZone_MouseUp"
-        >
+    <Border MouseUp="ColorZone_MouseUp">
+
+        <Border.Background>
+            <SolidColorBrush
+                Opacity=".01"
+                Color="White"
+                />
+        </Border.Background>
 
         <Grid>
 

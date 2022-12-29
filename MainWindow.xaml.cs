@@ -68,6 +68,10 @@ public partial class MainWindow : Window
             Left = anchor.X
         };
 
+        // set window size same as card size
+        childWindow.Height = card.ActualHeight;
+        childWindow.Width = card.ActualWidth;
+
         // set the DraggingPoint based on where on the card the mouse is positioned
         childWindow.DraggingPoint = e.GetPosition(card);
 
