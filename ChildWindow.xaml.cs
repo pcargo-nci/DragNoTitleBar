@@ -3,7 +3,9 @@ using System.Windows.Input;
 
 namespace DragNoTitleBar;
 
-// Defines a RoutedEventArgs for the WindowDrop Event
+/// <summary>
+/// Defines a RoutedEventArgs for the WindowDrop Event
+/// </summary>
 public class WindowDropEventArgs : RoutedEventArgs
 {
     private readonly Point eventArgs;
@@ -61,8 +63,19 @@ public partial class ChildWindow : Window
 
     private void ColorZone_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        DraggingPoint = e.GetPosition(this);
-        StartDraging();
+        // swtich window states on double click
+        if (e.ClickCount == 2)
+        {
+            SwitchState();
+            e.Handled = true;
+            return;
+        }
+
+        // start the drag if the window is normal
+        if (WindowState == WindowState.Normal)
+        {
+            StartDraging();
+        }
     }
 
     private void ColorZone_MouseUp(object sender, MouseButtonEventArgs e)
@@ -80,4 +93,41 @@ public partial class ChildWindow : Window
         }
         Dragging = false;
     }
+
+    /// <summary>
+    /// Handle the Maximize/Restore option
+    /// </summary>
+    private void WindowSwitchState(object sender, RoutedEventArgs e)
+    {
+        SwitchState();
+    }
+
+    /// <summary>
+    /// Handle the Minimize option
+    /// </summary>
+    private void WindowMinimize(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    /// <summary>
+    /// Toggle between the Maximized and Normal Window state
+    /// </summary>
+    private void SwitchState()
+    {
+        switch (WindowState)
+        {
+            case WindowState.Normal:
+                {
+                    WindowState = WindowState.Maximized;
+                    break;
+                }
+            case WindowState.Maximized:
+                {
+                    WindowState = WindowState.Normal;
+                    break;
+                }
+        }
+    }
+
 }

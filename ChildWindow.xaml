@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:DragNoTitleBar"
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="root"
     Title="ChildWindow"
     Width="316"
     Height="108"
@@ -13,13 +14,18 @@
     MinHeight="108"
     AllowsTransparency="True"
     Background="Transparent"
-    DataContext="{Binding RelativeSource={RelativeSource Self}}"
-    FontFamily="{DynamicResource MaterialDesignFont}"
+    FontFamily="{StaticResource MaterialDesignFont}"
     ResizeMode="CanResizeWithGrip"
+    Topmost="True"
     WindowState="Normal"
     WindowStyle="None"
     mc:Ignorable="d"
     >
+
+    <Window.Resources>
+        <local:WindowStateVisibilityNormalConverter x:Key="WindowStateVisibilityNormalConverter" />
+        <local:WindowStateVisibilityMaximizedConverter x:Key="WindowStateVisibilityMaximizedConverter" />
+    </Window.Resources>
 
     <WindowChrome.WindowChrome>
         <!--  remove the chrome at the top of window  -->
@@ -87,12 +93,82 @@
                                 />
                         </Button>
 
+                        <Button
+                            Click="WindowMinimize"
+                            DockPanel.Dock="Right"
+                            Foreground="Black"
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            ToolTip="Minimize"
+                            >
+                            <materialDesign:PackIcon
+                                Width="16"
+                                Height="16"
+                                Kind="WindowMinimize"
+                                />
+                        </Button>
+
+                        <Button
+                            Click="WindowSwitchState"
+                            DockPanel.Dock="Right"
+                            Foreground="Black"
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            ToolTip="Maximize"
+                            >
+                            <!--  display the Maximize when WindowState is normal  -->
+                            <Button.Visibility>
+                                <Binding
+                                    Converter="{StaticResource WindowStateVisibilityNormalConverter}"
+                                    ElementName="root"
+                                    Mode="OneWay"
+                                    Path="WindowState"
+                                    UpdateSourceTrigger="PropertyChanged"
+                                    />
+                            </Button.Visibility>
+                            <materialDesign:PackIcon
+                                Width="16"
+                                Height="16"
+                                Kind="WindowMaximize"
+                                />
+                        </Button>
+
+                        <Button
+                            Click="WindowSwitchState"
+                            DockPanel.Dock="Right"
+                            Foreground="Black"
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            ToolTip="Restore"
+                            >
+                            <!--  display the Restore when WindowState is maximized  -->
+                            <Button.Visibility>
+                                <Binding
+                                    Converter="{StaticResource WindowStateVisibilityMaximizedConverter}"
+                                    ElementName="root"
+                                    Mode="OneWay"
+                                    Path="WindowState"
+                                    UpdateSourceTrigger="PropertyChanged"
+                                    />
+                            </Button.Visibility>
+                            <materialDesign:PackIcon
+                                Width="16"
+                                Height="16"
+                                Kind="WindowRestore"
+                                />
+                        </Button>
+
                         <TextBlock
                             Margin="16,0,0,0"
                             VerticalAlignment="Center"
                             Style="{StaticResource MaterialDesignButtonTextBlock}"
-                            Text="{Binding Title}"
-                            />
+                            >
+                            <TextBlock.Text>
+                                <Binding
+                                    ElementName="root"
+                                    Mode="OneWay"
+                                    Path="Title"
+                                    UpdateSourceTrigger="PropertyChanged"
+                                    />
+                            </TextBlock.Text>
+                        </TextBlock>
 
                     </DockPanel>
                 </materialDesign:ColorZone>
