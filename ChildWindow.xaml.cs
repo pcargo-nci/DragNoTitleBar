@@ -165,10 +165,22 @@ public partial class ChildWindow : Window
         }
     }
 
+    /// <summary>
+    /// Defines how long the animation will take to complete
+    /// </summary>
     private readonly Duration AnimationDuration = new Duration(TimeSpan.FromSeconds(0.1));
+
+    /// <summary>
+    /// Animation for Height
+    /// </summary>
     private DoubleAnimation AnimationHeight;
 
-    private void Window_Activated(object sender, System.EventArgs e)
+
+    /// <summary>
+    /// Handler for when the Window becomes active,
+    /// used to display the expanded TitleBar
+    /// </summary>
+    private void Window_Activated(object sender, EventArgs e)
     {
         if (!Double.IsNaN(TitleBar.ActualHeight))
         {
@@ -182,20 +194,11 @@ public partial class ChildWindow : Window
         }
     }
 
-    private void HeightAnimation_Completed(object? sender, EventArgs e)
-    {
-        AnimationHeight.Completed -= HeightAnimation_Completed;
-        TitleBarContent.Measure(new Size(TitleBarContent.MaxWidth, TitleBarContent.MaxHeight));
-        System.Diagnostics.Debug.WriteLine($"titlebar:{TitleBar.ActualHeight} - content:{TitleBarContent.DesiredSize.Height}");
-        
-        // hide when smaller
-        if (TitleBar.ActualHeight < TitleBarContent.DesiredSize.Height) TitleBarContent.Visibility = Visibility.Hidden;
-
-        // show when larger
-        if (TitleBar.ActualHeight > 30) TitleBarContent.Visibility = Visibility.Visible;
-    }
-
-    private void Window_Deactivated(object sender, System.EventArgs e)
+    /// <summary>
+    /// Handler for when the Window becomes inactive,
+    /// used to display the collapsed TitleBar
+    /// </summary>
+    private void Window_Deactivated(object sender, EventArgs e)
     {
         if(!Double.IsNaN(TitleBar.ActualHeight))
         {
@@ -204,5 +207,21 @@ public partial class ChildWindow : Window
             AnimationHeight.Completed += HeightAnimation_Completed;
             TitleBar.BeginAnimation(HeightProperty, AnimationHeight);
         }
+    }
+
+    /// <summary>
+    /// Handler for when the Animation completes,
+    /// used to hide/show the TitleBarContents once the animation completes
+    /// </summary>
+    private void HeightAnimation_Completed(object? sender, EventArgs e)
+    {
+        AnimationHeight.Completed -= HeightAnimation_Completed;
+        TitleBarContent.Measure(new Size(TitleBarContent.MaxWidth, TitleBarContent.MaxHeight));
+
+        // hide when smaller
+        if (TitleBar.ActualHeight < TitleBarContent.DesiredSize.Height) TitleBarContent.Visibility = Visibility.Hidden;
+
+        // show when larger
+        if (TitleBar.ActualHeight > 30) TitleBarContent.Visibility = Visibility.Visible;
     }
 }
