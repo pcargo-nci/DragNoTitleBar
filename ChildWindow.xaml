@@ -12,13 +12,13 @@
     Height="108"
     MinWidth="316"
     MinHeight="108"
+    Activated="Window_Activated"
     AllowsTransparency="True"
     Background="Transparent"
+    Deactivated="Window_Deactivated"
     FontFamily="{StaticResource MaterialDesignFont}"
     MouseUp="Window_MouseUp"
-    Activated="Window_Activated"
-    Deactivated="Window_Deactivated"
-    ResizeMode="CanResizeWithGrip"
+    ResizeMode="CanResize"
     Topmost="True"
     WindowState="Normal"
     WindowStyle="None"
@@ -35,11 +35,11 @@
         <!--  make it easier to grab the  edges  -->
         <WindowChrome
             CaptionHeight="0"
-            ResizeBorderThickness="8"
+            ResizeBorderThickness="6"
             />
     </WindowChrome.WindowChrome>
 
-    <Border>
+    <Border Padding="6">
 
         <Border.Background>
             <SolidColorBrush
