@@ -164,4 +164,13 @@ public partial class ChildWindow : Window
         }
     }
 
+    private void Window_Activated(object sender, System.EventArgs e)
+    {
+        TitleBarContent.Height = double.NaN;
+    }
+
+    private void Window_Deactivated(object sender, System.EventArgs e)
+    {
+        TitleBarContent.Height = 0;
+    }
 }

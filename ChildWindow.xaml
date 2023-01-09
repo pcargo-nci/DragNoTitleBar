@@ -16,6 +16,8 @@
     Background="Transparent"
     FontFamily="{StaticResource MaterialDesignFont}"
     MouseUp="Window_MouseUp"
+    Activated="Window_Activated"
+    Deactivated="Window_Deactivated"
     ResizeMode="CanResizeWithGrip"
     Topmost="True"
     WindowState="Normal"
@@ -37,7 +39,7 @@
             />
     </WindowChrome.WindowChrome>
 
-    <Border MouseUp="Border_MouseUp">
+    <Border>
 
         <Border.Background>
             <SolidColorBrush
@@ -74,11 +76,15 @@
                 <materialDesign:ColorZone
                     x:Name="TitleBar"
                     Grid.Row="0"
+                    MinHeight="16"
                     materialDesign:CornerRadius="8,8,0,0"
                     Mode="SecondaryLight"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
                     >
-                    <DockPanel>
+                    <DockPanel
+                        x:Name="TitleBarContent"
+                        Height="0"
+                        >
 
                         <Button
                             Click="Button_Click"
