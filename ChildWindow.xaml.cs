@@ -1,6 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace DragNoTitleBar;
 
@@ -164,13 +165,44 @@ public partial class ChildWindow : Window
         }
     }
 
+    private readonly Duration AnimationDuration = new Duration(TimeSpan.FromSeconds(0.1));
+    private DoubleAnimation AnimationHeight;
+
     private void Window_Activated(object sender, System.EventArgs e)
     {
-        TitleBarContent.Height = double.NaN;
+        if (!Double.IsNaN(TitleBar.ActualHeight))
+        {
+            TitleBarContent.Measure(new Size(TitleBarContent.MaxWidth, TitleBarContent.MaxHeight));
+            if(TitleBarContent.DesiredSize.Height != TitleBarContent.ActualHeight)
+            {
+                AnimationHeight = new DoubleAnimation(TitleBarContent.DesiredSize.Height, AnimationDuration);
+                AnimationHeight.Completed += HeightAnimation_Completed;
+                TitleBar.BeginAnimation(HeightProperty, AnimationHeight);
+            }
+        }
+    }
+
+    private void HeightAnimation_Completed(object? sender, EventArgs e)
+    {
+        AnimationHeight.Completed -= HeightAnimation_Completed;
+        TitleBarContent.Measure(new Size(TitleBarContent.MaxWidth, TitleBarContent.MaxHeight));
+        System.Diagnostics.Debug.WriteLine($"titlebar:{TitleBar.ActualHeight} - content:{TitleBarContent.DesiredSize.Height}");
+        
+        // hide when smaller
+        if (TitleBar.ActualHeight < TitleBarContent.DesiredSize.Height) TitleBarContent.Visibility = Visibility.Hidden;
+
+        // show when larger
+        if (TitleBar.ActualHeight > 30) TitleBarContent.Visibility = Visibility.Visible;
     }
 
     private void Window_Deactivated(object sender, System.EventArgs e)
     {
-        TitleBarContent.Height = 0;
+        if(!Double.IsNaN(TitleBar.ActualHeight))
+        {
+            TitleBar.Height = TitleBarContent.ActualHeight;
+            AnimationHeight = new DoubleAnimation(16, AnimationDuration);
+            AnimationHeight.Completed += HeightAnimation_Completed;
+            TitleBar.BeginAnimation(HeightProperty, AnimationHeight);
+        }
     }
 }

@@ -83,7 +83,6 @@
                     >
                     <DockPanel
                         x:Name="TitleBarContent"
-                        Height="0"
                         >
 
                         <Button
