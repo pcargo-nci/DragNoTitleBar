@@ -81,9 +81,7 @@
                     Mode="SecondaryLight"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
                     >
-                    <DockPanel
-                        x:Name="TitleBarContent"
-                        >
+                    <DockPanel x:Name="TitleBarContent">
 
                         <Button
                             Click="Button_Click"
@@ -161,20 +159,22 @@
                                 />
                         </Button>
 
-                        <TextBlock
-                            Margin="16,0,0,0"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource MaterialDesignButtonTextBlock}"
-                            >
-                            <TextBlock.Text>
-                                <Binding
-                                    ElementName="root"
-                                    Mode="OneWay"
-                                    Path="Title"
-                                    UpdateSourceTrigger="PropertyChanged"
-                                    />
-                            </TextBlock.Text>
-                        </TextBlock>
+                        <Border VerticalAlignment="Stretch">
+                            <TextBlock
+                                Padding="16"
+                                Style="{StaticResource MaterialDesignButtonTextBlock}"
+                                >
+                                <TextBlock.Text>
+                                    <Binding
+                                        ElementName="root"
+                                        Mode="OneWay"
+                                        Path="Title"
+                                        UpdateSourceTrigger="PropertyChanged"
+                                        />
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Border>
+
 
                     </DockPanel>
                 </materialDesign:ColorZone>

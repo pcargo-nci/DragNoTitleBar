@@ -17,9 +17,10 @@
     </UserControl.Resources>
     <Grid>
         <StackPanel>
-            
+
             <materialDesign:ColorZone
-                Height="8"
+                Height="16"
+                materialDesign:CornerRadius="8,8,0,0"
                 Mode="SecondaryLight"
                 >
                 <materialDesign:ColorZone.Visibility>
@@ -30,7 +31,7 @@
                         />
                 </materialDesign:ColorZone.Visibility>
             </materialDesign:ColorZone>
-            
+
             <materialDesign:ColorZone
                 Padding="16"
                 Mode="Light"

@@ -187,9 +187,13 @@ public partial class ChildWindow : Window
             TitleBarContent.Measure(new Size(TitleBarContent.MaxWidth, TitleBarContent.MaxHeight));
             if(TitleBarContent.DesiredSize.Height != TitleBarContent.ActualHeight)
             {
+                // animate height
                 AnimationHeight = new DoubleAnimation(TitleBarContent.DesiredSize.Height, AnimationDuration);
-                AnimationHeight.Completed += HeightAnimation_Completed;
                 TitleBar.BeginAnimation(HeightProperty, AnimationHeight);
+
+                // animate opacity of TitleBarContent
+                DoubleAnimation opacityAnimation = new DoubleAnimation(1, AnimationDuration);
+                TitleBarContent.BeginAnimation(OpacityProperty, opacityAnimation);
             }
         }
     }
@@ -202,26 +206,15 @@ public partial class ChildWindow : Window
     {
         if(!Double.IsNaN(TitleBar.ActualHeight))
         {
+            // animate height of TitleBar
             TitleBar.Height = TitleBarContent.ActualHeight;
             AnimationHeight = new DoubleAnimation(16, AnimationDuration);
-            AnimationHeight.Completed += HeightAnimation_Completed;
             TitleBar.BeginAnimation(HeightProperty, AnimationHeight);
+
+            // animate opacity of TitleBarContent
+            DoubleAnimation opacityAnimation = new DoubleAnimation(0, AnimationDuration);
+            TitleBarContent.BeginAnimation(OpacityProperty, opacityAnimation);
         }
     }
 
-    /// <summary>
-    /// Handler for when the Animation completes,
-    /// used to hide/show the TitleBarContents once the animation completes
-    /// </summary>
-    private void HeightAnimation_Completed(object? sender, EventArgs e)
-    {
-        AnimationHeight.Completed -= HeightAnimation_Completed;
-        TitleBarContent.Measure(new Size(TitleBarContent.MaxWidth, TitleBarContent.MaxHeight));
-
-        // hide when smaller
-        if (TitleBar.ActualHeight < TitleBarContent.DesiredSize.Height) TitleBarContent.Visibility = Visibility.Hidden;
-
-        // show when larger
-        if (TitleBar.ActualHeight > 30) TitleBarContent.Visibility = Visibility.Visible;
-    }
 }
