@@ -1,10 +1,11 @@
-﻿using System.Windows;
+﻿using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DragNoTitleBar;
 
 /// <summary>
-/// Defines a RoutedEventArgs for the WindowDrop Event
+/// Provides the arguments sent with the WindowDropEvent
 /// </summary>
 public class WindowDropEventArgs : RoutedEventArgs
 {
@@ -20,7 +21,8 @@ public class WindowDropEventArgs : RoutedEventArgs
 }
 
 /// <summary>
-/// Interaction logic for ChildWindow.xaml
+/// The ChildCard provides a Window wrapper for a Card.
+/// The component handles dragging, resizing, and dropping the Window.
 /// </summary>
 public partial class ChildWindow : Window
 {
@@ -39,29 +41,37 @@ public partial class ChildWindow : Window
         ownerType: typeof(ChildWindow)
     );
 
-    // Provide CLR accessors for assigning an event handler.
+    /// <summary>
+    /// Provide CLR accessors for WindowDroppedEvent
+    /// </summary>
     public event RoutedEventHandler WindowDropped
     {
         add { AddHandler(WindowDroppedEvent, value); }
         remove { RemoveHandler(WindowDroppedEvent, value); }
     }
 
+    /// <summary>
+    /// Indicates if the Window is being dragged
+    /// </summary>
     public bool Dragging;
-    
-    public Point DraggingPoint = new(0,0);
 
-    public void StartDraging()
-    {
-        Dragging = true;
-        DragMove();
-    }
+    /// <summary>
+    /// Indicates the location of the mouse relative to the TitleBar
+    /// </summary>
+    public Point TitleBarOffset = new(0, 0);
 
+    /// <summary>
+    /// Handle when the Window close option is selected
+    /// </summary>
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         Close();
     }
 
-    private void ColorZone_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    /// <summary>
+    /// Handle MouseLeftButtonDown, handles drag start and double click to full screen
+    /// </summary>
+    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         // swtich window states on double click
         if (e.ClickCount == 2)
@@ -74,24 +84,48 @@ public partial class ChildWindow : Window
         // start the drag if the window is normal
         if (WindowState == WindowState.Normal)
         {
-            StartDraging();
+            StartDraging(e);
         }
     }
 
-    private void ColorZone_MouseUp(object sender, MouseButtonEventArgs e)
+    /// <summary>
+    /// Start Drag from event position, used to start dragging the Window leverage DragMove().
+    /// DragMove() enables built in functionality such as docking to edges, shake to minimize all, etc.
+    /// </summary>
+    public void StartDraging(MouseButtonEventArgs e)
     {
+        Dragging = true;
+        TitleBarOffset = e.GetPosition(this);
+        DragMove();
+    }
+
+    /// <summary>
+    /// Raise the WindowDropped if Dragging
+    /// </summary>
+    private void RaiseWindowDropped(MouseButtonEventArgs e)
+    {
+        // stop dragging if started, send out drop event
         if (Dragging)
         {
-            var mainWindowPosition = e.GetPosition(Application.Current.MainWindow);
-            var relativePosition = new Point(mainWindowPosition.X + DraggingPoint.X, mainWindowPosition.Y + DraggingPoint.Y);
+            Dragging = false;
 
             // create event args
-            WindowDropEventArgs routedEventArgs = new(WindowDroppedEvent, relativePosition);
+            WindowDropEventArgs routedEventArgs = new(
+                WindowDroppedEvent,
+                TitleBarOffset
+            );
 
             // raise the event
             RaiseEvent(routedEventArgs);
         }
-        Dragging = false;
+    }
+
+    /// <summary>
+    /// Handle mouse up, calls RaiseWindowDropped()
+    /// </summary>
+    private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        RaiseWindowDropped(e);
     }
 
     /// <summary>

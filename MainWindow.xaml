@@ -33,7 +33,10 @@
         >
 
         <Border.BorderBrush>
-            <SolidColorBrush Opacity=".2" Color="Black"/>
+            <SolidColorBrush
+                Opacity=".2"
+                Color="Black"
+                />
         </Border.BorderBrush>
 
         <Grid>
@@ -78,7 +81,10 @@
                 </DockPanel>
             </materialDesign:ColorZone>
 
-            <Grid Grid.Row="1">
+            <Grid
+                x:Name="CurrentPageContainer"
+                Grid.Row="1"
+                >
 
                 <!--  main content  -->
                 <ScrollViewer>

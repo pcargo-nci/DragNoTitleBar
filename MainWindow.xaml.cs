@@ -72,9 +72,6 @@ public partial class MainWindow : Window
         childWindow.Height = card.ActualHeight;
         childWindow.Width = card.ActualWidth;
 
-        // set the DraggingPoint based on where on the card the mouse is positioned
-        childWindow.DraggingPoint = e.GetPosition(card);
-
         ChildWindows.Add(childWindow);
 
         card.MouseLeftButtonDown -= Card_MouseLeftButtonDown;
@@ -87,24 +84,33 @@ public partial class MainWindow : Window
         childWindow.Show();
 
         // start dragging
-        childWindow.StartDraging();
+        childWindow.StartDraging(e);
     }
 
     private void ChildWindow_WindowDropped(object sender, RoutedEventArgs e)
     {
-        var args = (WindowDropEventArgs)e;
-        var dropPoint = args.EventArgs;
+        var windowCard = (ChildWindow)sender;
+        var titleBarOffset = ((WindowDropEventArgs)e).EventArgs;
+        var mainWindow = (MainWindow)Application.Current.MainWindow;
+        var currentPageContainer = mainWindow.CurrentPageContainer;
 
-        // check to see if drop was within the bounds of the window
+        // drop area position relative to MainWindow
+        Point currentPageContainerPosition = mainWindow
+            .CurrentPageContainer
+            .TransformToAncestor(ancestor: mainWindow)
+            .Transform(new Point(0, 0));
+
+        Point dropPoint = new(windowCard.Left + titleBarOffset.X, windowCard.Top + titleBarOffset.Y);
+
+        // check to see if drop was within the bounds of the CurrentPageContainer
         if (
-            dropPoint.X > 0
-            && dropPoint.X < ActualWidth
-            && dropPoint.Y > 0
-            && dropPoint.Y < ActualHeight
+            dropPoint.X > (mainWindow.Left + currentPageContainerPosition.X)
+            && dropPoint.X < (mainWindow.Left + currentPageContainerPosition.X + currentPageContainer.ActualWidth)
+            && dropPoint.Y > (mainWindow.Top + currentPageContainerPosition.Y)
+            && dropPoint.Y < (mainWindow.Top + currentPageContainerPosition.Y + currentPageContainer.ActualHeight)
         )
         {
-            var childWindow = (ChildWindow)sender;
-            ChildWindowDrop(childWindow);
+            ChildWindowDrop(windowCard);
         }
     }
 

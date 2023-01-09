@@ -15,6 +15,7 @@
     AllowsTransparency="True"
     Background="Transparent"
     FontFamily="{StaticResource MaterialDesignFont}"
+    MouseUp="Window_MouseUp"
     ResizeMode="CanResizeWithGrip"
     Topmost="True"
     WindowState="Normal"
@@ -36,7 +37,7 @@
             />
     </WindowChrome.WindowChrome>
 
-    <Border MouseUp="ColorZone_MouseUp">
+    <Border MouseUp="Border_MouseUp">
 
         <Border.Background>
             <SolidColorBrush
@@ -75,7 +76,7 @@
                     Grid.Row="0"
                     materialDesign:CornerRadius="8,8,0,0"
                     Mode="SecondaryLight"
-                    MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
                     >
                     <DockPanel>
 
