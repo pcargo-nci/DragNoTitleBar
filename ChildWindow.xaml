@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:DragNoTitleBar"
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
     x:Name="root"
     Title="ChildWindow"
     Width="316"
@@ -44,7 +45,7 @@
         <Border.Background>
             <SolidColorBrush
                 Opacity=".01"
-                Color="White"
+                Color="Black"
                 />
         </Border.Background>
 
@@ -76,9 +77,11 @@
                 <materialDesign:ColorZone
                     x:Name="TitleBar"
                     Grid.Row="0"
-                    MinHeight="16"
+                    Height="16"
                     materialDesign:CornerRadius="8,8,0,0"
                     Mode="SecondaryLight"
+                    MouseEnter="TitleBar_MouseEnter"
+                    MouseLeave="TitleBar_MouseLeave"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
                     >
                     <DockPanel x:Name="TitleBarContent">
@@ -183,7 +186,7 @@
             <!--  content  -->
             <Border
                 Grid.Row="1"
-                Padding="0,0,0,8"
+                Padding="8,0,8,8"
                 Background="White"
                 BorderThickness="1,0,1,1"
                 CornerRadius="0,0,8,8"
@@ -196,7 +199,11 @@
                         />
                 </Border.BorderBrush>
 
-                <local:Card />
+                <wv2:WebView2
+                    x:Name="WindowContent"
+                    DefaultBackgroundColor="Transparent"
+                    Source="https://www.empower.ai/"
+                    />
 
             </Border>
 

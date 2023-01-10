@@ -52,6 +52,16 @@ public partial class ChildWindow : Window
     }
 
     /// <summary>
+    /// Collapsed height of TitleBar
+    /// </summary>
+    public double TitleBarCollapsedHeight = 16;
+
+    /// <summary>
+    /// Expanded height of TitleBar
+    /// </summary>
+    public double TitleBarExpandedHeight = 48;
+
+    /// <summary>
     /// Indicates if the Window is being dragged
     /// </summary>
     public bool Dragging;
@@ -175,6 +185,96 @@ public partial class ChildWindow : Window
     /// </summary>
     private DoubleAnimation AnimationHeight;
 
+    /// <summary>
+    /// Animate the TitleBar to Collapsed Height
+    /// </summary>
+    private void TitleBarCollapse()
+    {
+        if (TitleBar.ActualHeight == TitleBarExpandedHeight)
+        {
+            // freeze the content height
+            WindowContent.Height = WindowContent.ActualHeight;
+
+            // animate height of TitleBar
+            AnimationHeight = new DoubleAnimation(TitleBarCollapsedHeight, AnimationDuration);
+            AnimationHeight.Completed += AnimationHeight_Collapse_Completed;
+            TitleBar.BeginAnimation(HeightProperty, AnimationHeight);
+
+            // animate height of Window
+            root.BeginAnimation(
+                HeightProperty,
+                new DoubleAnimation(
+
+                    root.ActualHeight - (TitleBarExpandedHeight - TitleBarCollapsedHeight),
+                    AnimationDuration
+                )
+            );
+
+            // hide TitleBarContent
+            TitleBarContent.Visibility = Visibility.Hidden;
+        }
+    }
+
+    /// <summary>
+    /// Handle animation complete,
+    /// allows removing the set Height on the content after the title bar has changed size
+    /// </summary>
+    private void AnimationHeight_Collapse_Completed(object? sender, EventArgs e)
+    {
+        AnimationHeight.Completed -= AnimationHeight_Collapse_Completed;
+        // Unfreeze the content - reset size to fill the given space
+        WindowContent.Height = Double.NaN;
+    }
+
+    /// <summary>
+    /// Animate the TitleBar to Expanded Height
+    /// </summary>
+    private void TitleBarExpand()
+    {
+        if (TitleBar.ActualHeight == TitleBarCollapsedHeight)
+        {
+            // freeze the content height
+            WindowContent.Height = WindowContent.ActualHeight;
+
+            // animate height of TitleBar
+            AnimationHeight = new DoubleAnimation(TitleBarExpandedHeight, AnimationDuration);
+            AnimationHeight.Completed += AnimationHeight_Expand_Completed;
+            TitleBar.BeginAnimation(HeightProperty, AnimationHeight);
+
+            // animate height of Window
+            root.BeginAnimation(
+                HeightProperty,
+                new DoubleAnimation(
+                    root.ActualHeight,
+                    root.ActualHeight + (TitleBarExpandedHeight - TitleBarCollapsedHeight),
+                    AnimationDuration
+                )
+            );
+
+            // animate opacity of TitleBarContent
+            TitleBarContent.BeginAnimation(
+                OpacityProperty,
+                new DoubleAnimation(
+                    1,
+                    AnimationDuration
+                )
+            );
+
+            // show TitleBarContent
+            TitleBarContent.Visibility = Visibility.Visible;
+        }
+    }
+
+    /// <summary>
+    /// Handle animation complete,
+    /// allows removing the set Height on the content after the title bar has changed size
+    /// </summary>
+    private void AnimationHeight_Expand_Completed(object? sender, EventArgs e)
+    {
+        AnimationHeight.Completed -= AnimationHeight_Expand_Completed;
+        // Reset size to fill the given space
+        WindowContent.Height = Double.NaN;
+    }
 
     /// <summary>
     /// Handler for when the Window becomes active,
@@ -182,20 +282,7 @@ public partial class ChildWindow : Window
     /// </summary>
     private void Window_Activated(object sender, EventArgs e)
     {
-        if (!Double.IsNaN(TitleBar.ActualHeight))
-        {
-            TitleBarContent.Measure(new Size(TitleBarContent.MaxWidth, TitleBarContent.MaxHeight));
-            if(TitleBarContent.DesiredSize.Height != TitleBarContent.ActualHeight)
-            {
-                // animate height
-                AnimationHeight = new DoubleAnimation(TitleBarContent.DesiredSize.Height, AnimationDuration);
-                TitleBar.BeginAnimation(HeightProperty, AnimationHeight);
-
-                // animate opacity of TitleBarContent
-                DoubleAnimation opacityAnimation = new DoubleAnimation(1, AnimationDuration);
-                TitleBarContent.BeginAnimation(OpacityProperty, opacityAnimation);
-            }
-        }
+        TitleBarExpand();
     }
 
     /// <summary>
@@ -204,17 +291,19 @@ public partial class ChildWindow : Window
     /// </summary>
     private void Window_Deactivated(object sender, EventArgs e)
     {
-        if(!Double.IsNaN(TitleBar.ActualHeight))
-        {
-            // animate height of TitleBar
-            TitleBar.Height = TitleBarContent.ActualHeight;
-            AnimationHeight = new DoubleAnimation(16, AnimationDuration);
-            TitleBar.BeginAnimation(HeightProperty, AnimationHeight);
-
-            // animate opacity of TitleBarContent
-            DoubleAnimation opacityAnimation = new DoubleAnimation(0, AnimationDuration);
-            TitleBarContent.BeginAnimation(OpacityProperty, opacityAnimation);
-        }
+        TitleBarCollapse();
     }
 
+    private void TitleBar_MouseLeave(object sender, MouseEventArgs e)
+    {
+        // do not collapse if window is Active
+        if (IsActive) return;
+
+        TitleBarCollapse();
+    }
+
+    private void TitleBar_MouseEnter(object sender, MouseEventArgs e)
+    {
+        TitleBarExpand();
+    }
 }

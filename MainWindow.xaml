@@ -52,6 +52,7 @@
 
             <materialDesign:ColorZone
                 Grid.Row="0"
+                Height="48"
                 Mode="PrimaryDark"
                 MouseLeftButtonDown="ColorZone_MouseLeftButtonDown"
                 >
