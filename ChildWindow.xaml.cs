@@ -178,7 +178,9 @@ public partial class ChildWindow : Window
     /// <summary>
     /// Defines how long the animation will take to complete
     /// </summary>
-    private readonly Duration AnimationDuration = new Duration(TimeSpan.FromSeconds(0.1));
+    private readonly Duration AnimationDuration = new(
+        TimeSpan.FromSeconds(0.1)
+    );
 
     /// <summary>
     /// Animation for Height
@@ -204,7 +206,7 @@ public partial class ChildWindow : Window
             root.BeginAnimation(
                 HeightProperty,
                 new DoubleAnimation(
-
+                    root.ActualHeight,
                     root.ActualHeight - (TitleBarExpandedHeight - TitleBarCollapsedHeight),
                     AnimationDuration
                 )
