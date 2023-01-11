@@ -296,16 +296,24 @@ public partial class ChildWindow : Window
         TitleBarCollapse();
     }
 
+    /// <summary>
+    /// /Handle when the users mouses hovers over TitleBar,
+    /// used to expand the TitleBar to make it easier to grab
+    /// </summary>
+    private void TitleBar_MouseEnter(object sender, MouseEventArgs e)
+    {
+        TitleBarExpand();
+    }
+
+    /// <summary>
+    /// /Handle when the users mouses leaves the TitleBar,
+    /// used to collapse the TitleBar
+    /// </summary>
     private void TitleBar_MouseLeave(object sender, MouseEventArgs e)
     {
         // do not collapse if window is Active
         if (IsActive) return;
 
         TitleBarCollapse();
-    }
-
-    private void TitleBar_MouseEnter(object sender, MouseEventArgs e)
-    {
-        TitleBarExpand();
     }
 }
